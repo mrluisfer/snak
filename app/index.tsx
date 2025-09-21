@@ -29,8 +29,9 @@ export default function RootView() {
         password,
       });
       if (error) {
-        setLoginStatusMessage(error.message || error.name || "Login failed");
-        throw error;
+        const errorMessage = error.message || error.name || "Login failed";
+        setLoginStatusMessage(errorMessage);
+        Alert.alert(errorMessage);
       }
 
       if (data.user) {
