@@ -61,7 +61,8 @@ export const Styles = {
   radius: 12,
   separation: 16,
   titleSize: 32,
-  textSize: 16,
+  textSize: 17,
+  secondaryTextSize: 15,
 };
 
 export const currentTheme = "light" as keyof typeof Colors;

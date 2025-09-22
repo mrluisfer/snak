@@ -1,47 +1,34 @@
-import React, { useState } from "react";
-import { Alert, Text, View } from "react-native";
 import { SafeAreaProvider } from "@/components/ui/safe-area-provider";
 import { ViewTitle } from "@/components/ui/view-title";
-import { Stack, useRouter } from "expo-router";
-import { Styles } from "@/constants/theme";
-import { AuthForm, AuthType } from "@/components/auth/form";
+import { Colors, currentTheme, Styles } from "@/constants/theme";
 import { supabase } from "@/lib/supabase";
+import { Stack, useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Alert, Button, Text, View } from "react-native";
+import { AuthForm, AuthType } from "@/components/auth/form";
 
-export default function SignupView() {
+export default function LoginView() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<null | string>(null);
+  const [loginStatusMessage, setLoginStatusMessage] = useState<null | string>(
+    null,
+  );
 
   const router = useRouter();
 
-  async function handleSignup() {
+  async function handleLogin() {
     setIsLoading(true);
-    setStatusMessage(null);
+    setLoginStatusMessage(null);
     try {
       Alert.alert(`Logging in with ${email} and ${password}`);
-      const signUpResponse = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          data: {
-            name,
-            email,
-          },
-        },
       });
-      const createdUsers = await supabase
-        .from("users")
-        .insert([{ email, name, auth_id: signUpResponse.data.user?.id }])
-        .select();
-
-      const error = signUpResponse.error || createdUsers.error;
-      const data = signUpResponse.data || createdUsers.data;
-
       if (error) {
         const errorMessage = error.message || error.name || "Login failed";
-        setStatusMessage(errorMessage);
+        setLoginStatusMessage(errorMessage);
         Alert.alert(errorMessage);
       }
 
@@ -60,29 +47,41 @@ export default function SignupView() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaProvider
-        as={"view"}
+        as="view"
         style={{
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <ViewTitle>Sign Up</ViewTitle>
-        <View>
-          <Text style={{ fontSize: Styles.textSize }}>
-            Create your account to start shopping.
-          </Text>
-        </View>
-        <View style={{ width: "100%", marginTop: Styles.separation }}>
+        <ViewTitle>Sign In</ViewTitle>
+        <Text
+          style={{
+            color: Colors[currentTheme].secondaryText,
+            marginBottom: 16,
+            textAlign: "center",
+            fontSize: Styles.textSize,
+          }}
+        >
+          Enter a valid email and password to continue.
+        </Text>
+        <View style={{ width: "100%", gap: 30 }}>
           <AuthForm
             setEmail={setEmail}
             setPassword={setPassword}
-            setName={setName}
             isLoading={isLoading}
-            onSubmit={handleSignup}
+            onSubmit={handleLogin}
             isButtonDisabled={isLoading || !email || !password}
-            type={AuthType.SIGNUP}
-            statusMessage={statusMessage}
+            type={AuthType.LOGIN}
+            statusMessage={loginStatusMessage}
+          />
+        </View>
+        <View>
+          <Button
+            title="Go to Sign Up"
+            onPress={() => router.push("/signup")}
+            color={"#1E90FF"}
+            accessibilityLabel="Go to Sign Up"
           />
         </View>
       </SafeAreaProvider>

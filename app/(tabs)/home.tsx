@@ -4,7 +4,7 @@ import { Colors, currentTheme, Styles } from "@/constants/theme";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link } from "expo-router";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -13,9 +13,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useAuthContext } from "@/hooks/use-auth-context";
 
 export default function HomeScreen() {
   const inputRef = useRef<TextInput>(null);
+  const { isLoggedIn } = useAuthContext();
+  alert(isLoggedIn);
 
   return (
     <SafeAreaProvider as="scrollview">

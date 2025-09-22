@@ -5,6 +5,7 @@ import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors, currentTheme } from "@/constants/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GlassView } from "expo-glass-effect";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
@@ -17,6 +18,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
       }}
+      initialRouteName={"home"}
     >
       <Tabs.Screen
         name="home"
