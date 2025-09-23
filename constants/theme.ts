@@ -11,13 +11,16 @@ export const tintColorDark = "#fff";
 export const Colors = {
   light: {
     text: "#11181C",
-    background: "#fff",
     backgroundSecondary: "#F6F6F7ff",
     tint: tintColorLight,
     icon: "#687076",
     tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
     secondaryText: "#6C7378",
+    background: "#F3E9DC", // Light beige, ideal for backgrounds
+    primary: "#D96F32", // Main orange
+    primaryDark: "#C75D2C", // Darker orange (for active/hover states)
+    accent: "#F8B259", // Accent yellow-orange
   },
   // dark: {
   //   text: "#ECEDEE",
