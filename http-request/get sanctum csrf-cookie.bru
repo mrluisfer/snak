@@ -1,0 +1,15 @@
+meta {
+  name: get sanctum csrf-cookie
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://127.0.0.1:8000/sanctum/csrf-cookie
+  body: none
+  auth: none
+}
+
+settings {
+  encodeUrl: true
+}
