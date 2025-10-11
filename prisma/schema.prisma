@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -10,8 +9,6 @@ datasource db {
   schemas  = ["public"]
 }
 
-/// Usuario: puede tener negocios y también comprar en otros
-
 model User {
   id               String             @id @default(cuid())
   email            String             @unique
@@ -19,20 +16,17 @@ model User {
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   deletedAt        DateTime?
+  emailVerified    Boolean            @default(false)
+  image            String?
   BusinessCustomer BusinessCustomer[]
   memberships      BusinessMember[]
   ordersPlaced     Order[]            @relation("OrdersByBuyer")
+  accounts         Account[]
+  sessions         Session[]
 
-  emailVerified Boolean   @default(false)
-  image         String?
-  sessions      Session[]
-  accounts      Account[]
-
-  @@schema("public")
   @@map("user")
+  @@schema("public")
 }
-
-/// Negocio: tiene productos y recibe órdenes
 
 model Business {
   id             String             @id @default(cuid())
@@ -51,8 +45,6 @@ model Business {
   @@schema("public")
 }
 
-/// Relación usuario-negocio con rol (soporta múltiples admins a futuro)
-
 model BusinessMember {
   id         String       @id @default(cuid())
   userId     String
@@ -66,8 +58,6 @@ model BusinessMember {
   @@index([businessId, role])
   @@schema("public")
 }
-
-/// Producto: pertenece a un negocio
 
 model Product {
   id          String      @id @default(cuid())
@@ -88,8 +78,6 @@ model Product {
   @@index([businessId, name])
   @@schema("public")
 }
-
-/// Orden: une comprador (user o su negocio) con vendedor (un Business)
 
 model Order {
   id               String        @id @default(cuid())
@@ -119,8 +107,6 @@ model Order {
   @@schema("public")
 }
 
-/// Línea de orden: snapshot del producto al momento de la compra
-
 model OrderItem {
   id          String  @id @default(cuid())
   orderId     String
@@ -138,8 +124,6 @@ model OrderItem {
   @@schema("public")
 }
 
-/// Tabla de clientes por negocio (fidelización / métricas rápidas)
-
 model BusinessCustomer {
   id              String   @id @default(cuid())
   businessId      String
@@ -156,7 +140,52 @@ model BusinessCustomer {
   @@schema("public")
 }
 
-/// Enums útiles
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+  @@schema("public")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+  @@schema("public")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@map("verification")
+  @@schema("public")
+}
 
 enum BusinessRole {
   OWNER
@@ -190,52 +219,4 @@ enum Currency {
   EUR
 
   @@schema("public")
-}
-
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([token])
-  @@map("session")
-  @@schema("public")
-}
-
-model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-
-  @@map("account")
-  @@schema("public")
-}
-
-model Verification {
-  id         String   @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
-
-  @@map("verification")
-    @@schema("public")
 }

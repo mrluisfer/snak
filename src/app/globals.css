@@ -198,3 +198,12 @@
 html {
     overscroll-behavior: none;
 }
+
+.hidden-scroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+.hidden-scroll::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}

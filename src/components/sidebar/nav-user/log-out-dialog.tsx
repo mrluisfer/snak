@@ -9,30 +9,12 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { authClient } from '@/lib/auth-client';
+import { handleLogOut } from '@/lib/sign-out';
 import { AlertDialogCancel } from '@radix-ui/react-alert-dialog';
 import { LogOutIcon, UserXIcon, XIcon } from 'lucide-react';
-import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
-import { toast } from 'sonner';
 
 export const LogOutDialog = ({ children }: { children: ReactNode }) => {
-    const handleLogOut = async () => {
-        await authClient.signOut({
-            fetchOptions: {
-                onSuccess: () => {
-                    toast.success('Logged out successfully');
-                    redirect('/auth/login');
-                },
-                onError: (error) => {
-                    toast.error('Failed to log out. Please try again.', {
-                        description: JSON.stringify(error),
-                    });
-                },
-            },
-        });
-    };
-
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>

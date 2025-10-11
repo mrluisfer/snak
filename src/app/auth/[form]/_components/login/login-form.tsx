@@ -16,7 +16,7 @@ import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ExternalLinkIcon, MailIcon } from 'lucide-react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -35,6 +35,7 @@ const loginFormSchema = z.object({
 
 export const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const form = useForm({
         resolver: zodResolver(loginFormSchema),
@@ -61,7 +62,8 @@ export const LoginForm = () => {
                 onSuccess: () => {
                     //redirect to the dashboard or sign in page
                     setIsLoading(false);
-                    redirect('/');
+                    router.push('/');
+                    router.refresh();
                 },
                 onError: (ctx) => {
                     setIsLoading(false);

@@ -1,3 +1,6 @@
+import { Card, CardContent } from '@/components/ui/card';
+import { AccountForm } from './_components/account/account-form';
+
 export default async function SettingsAccountPage({
     params,
 }: {
@@ -6,5 +9,11 @@ export default async function SettingsAccountPage({
     const { setting } = await params;
 
     console.log(setting);
-    return <p>User Page</p>;
+    return (
+        <Card>
+            <CardContent>
+                {setting === 'account' && <AccountForm />}
+            </CardContent>
+        </Card>
+    );
 }

@@ -188,7 +188,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="hidden-scroll">
                 <NavMain items={sidebarData.navMain} />
                 <NavProjects projects={sidebarData.projects} />
                 <NavSecondary

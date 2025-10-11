@@ -18,13 +18,18 @@ export default function SettingsLayout({
 }) {
     const pathname = usePathname();
 
-    console.log({ pathname });
+    const activePathname = settingsFields.find(
+        (field) => field.href.split('/')[2] === pathname.split('/')[2],
+    );
+
+    console.log({ pathname, activePathname });
+
     return (
         <Providers>
             <SharedLayout>
                 <div className="pt-24">
                     <div>
-                        <h1 className="font-serif text-2xl font-bold">
+                        <h1 className="pl-6 font-serif text-2xl font-bold">
                             Settings
                         </h1>
                     </div>
@@ -32,7 +37,11 @@ export default function SettingsLayout({
                         <nav className="flex flex-col gap-2 font-medium">
                             {settingsFields.map((field) => (
                                 <Button
-                                    variant="ghost"
+                                    variant={
+                                        activePathname?.href === field.href
+                                            ? 'default'
+                                            : 'ghost'
+                                    }
                                     className="justify-start text-lg"
                                     key={field.name}
                                     asChild
@@ -42,7 +51,7 @@ export default function SettingsLayout({
                                 </Button>
                             ))}
                         </nav>
-                        <div>{children}</div>
+                        <>{children}</>
                     </div>
                 </div>
             </SharedLayout>
