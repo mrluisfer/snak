@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public"]
+}
+
+/// Usuario: puede tener negocios y también comprar en otros
+model User {
+  id               String             @id @default(cuid())
+  email            String             @unique
+  name             String
+  password         String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+  BusinessCustomer BusinessCustomer[]
+  memberships      BusinessMember[]
+  ordersPlaced     Order[]            @relation("OrdersByBuyer")
+
+  @@schema("public")
+}
+
+/// Negocio: tiene productos y recibe órdenes
+model Business {
+  id             String             @id @default(cuid())
+  name           String
+  address        String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  deletedAt      DateTime?
+  customers      BusinessCustomer[]
+  members        BusinessMember[]
+  Order          Order[]
+  ordersReceived Order[]            @relation("OrdersBySeller")
+  products       Product[]
+
+  @@index([name])
+  @@schema("public")
+}
+
+/// Relación usuario-negocio con rol (soporta múltiples admins a futuro)
+model BusinessMember {
+  id         String       @id @default(cuid())
+  userId     String
+  businessId String
+  role       BusinessRole @default(STAFF)
+  createdAt  DateTime     @default(now())
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, businessId])
+  @@index([businessId, role])
+  @@schema("public")
+}
+
+/// Producto: pertenece a un negocio
+model Product {
+  id          String      @id @default(cuid())
+  businessId  String
+  name        String
+  sku         String?
+  description String?
+  price       Decimal     @db.Decimal(12, 2)
+  currency    Currency    @default(MXN)
+  stock       Int?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
+  orderItems  OrderItem[]
+  business    Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, sku], map: "product_sku_per_business")
+  @@index([businessId, name])
+  @@schema("public")
+}
+
+/// Orden: une comprador (user o su negocio) con vendedor (un Business)
+model Order {
+  id               String        @id @default(cuid())
+  buyerUserId      String
+  buyerBusinessId  String?
+  sellerBusinessId String
+  status           OrderStatus   @default(PENDING)
+  paymentStatus    PaymentStatus @default(UNPAID)
+  currency         Currency      @default(MXN)
+  subtotal         Decimal       @db.Decimal(12, 2)
+  tax              Decimal       @default(0) @db.Decimal(12, 2)
+  discount         Decimal       @default(0) @db.Decimal(12, 2)
+  total            Decimal       @db.Decimal(12, 2)
+  paidAt           DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  cancelledAt      DateTime?
+  deletedAt        DateTime?
+  buyerBusiness    Business?     @relation(fields: [buyerBusinessId], references: [id])
+  buyerUser        User          @relation("OrdersByBuyer", fields: [buyerUserId], references: [id])
+  sellerBusiness   Business      @relation("OrdersBySeller", fields: [sellerBusinessId], references: [id])
+  items            OrderItem[]
+
+  @@index([buyerUserId, createdAt])
+  @@index([sellerBusinessId, createdAt])
+  @@index([status, paymentStatus])
+  @@schema("public")
+}
+
+/// Línea de orden: snapshot del producto al momento de la compra
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String
+  productId   String
+  productName String
+  productSku  String?
+  unitPrice   Decimal @db.Decimal(12, 2)
+  quantity    Int
+  lineTotal   Decimal @db.Decimal(12, 2)
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+  @@schema("public")
+}
+
+/// Tabla de clientes por negocio (fidelización / métricas rápidas)
+model BusinessCustomer {
+  id              String   @id @default(cuid())
+  businessId      String
+  userId          String
+  firstPurchaseAt DateTime @default(now())
+  lastPurchaseAt  DateTime @default(now())
+  ordersCount     Int      @default(1)
+  totalSpent      Decimal  @default(0) @db.Decimal(14, 2)
+  business        Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, userId])
+  @@index([businessId, lastPurchaseAt])
+  @@schema("public")
+}
+
+/// Enums útiles
+enum BusinessRole {
+  OWNER
+  ADMIN
+  STAFF
+
+  @@schema("public")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  REFUNDED
+
+  @@schema("public")
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+  REFUNDED
+
+  @@schema("public")
+}
+
+enum Currency {
+  USD
+  MXN
+  EUR
+
+  @@schema("public")
+}
