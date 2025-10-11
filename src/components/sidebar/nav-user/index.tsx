@@ -2,11 +2,11 @@
 
 import {
     BadgeCheck,
-    Bell,
     ChevronsUpDown,
     CreditCard,
     LogOut,
     Sparkles,
+    UserXIcon,
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -25,17 +25,49 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
+import { authClient } from '@/lib/auth-client';
+import Link from 'next/link';
+import { useMemo } from 'react';
+import { Spinner } from '../../ui/spinner';
+import { LogOutDialog } from './log-out-dialog';
 
-export function NavUser({
-    user,
-}: {
-    user: {
-        name: string;
-        email: string;
-        avatar: string;
-    };
-}) {
+export function NavUser() {
     const { isMobile } = useSidebar();
+
+    const { data, isPending, error } = authClient.useSession();
+
+    const userImage = useMemo(() => {
+        if (data?.user.image) {
+            return data.user.image;
+        }
+        return '/default-user-profile.png';
+    }, [data?.user.image]);
+
+    if (isPending) {
+        return (
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton size="lg" disabled>
+                        <Spinner />
+                        Loading...
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        );
+    }
+
+    if (error) {
+        return (
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton size="lg" disabled>
+                        <UserXIcon />
+                        Error loading user
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        );
+    }
 
     return (
         <SidebarMenu>
@@ -48,8 +80,8 @@ export function NavUser({
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
                                 <AvatarImage
-                                    src={user.avatar}
-                                    alt={user.name}
+                                    src={userImage}
+                                    alt={data?.user.name || 'User'}
                                 />
                                 <AvatarFallback className="rounded-lg">
                                     CN
@@ -57,10 +89,10 @@ export function NavUser({
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">
-                                    {user.name}
+                                    {data?.user.name}
                                 </span>
                                 <span className="truncate text-xs">
-                                    {user.email}
+                                    {data?.user.email}
                                 </span>
                             </div>
                             <ChevronsUpDown className="ml-auto size-4" />
@@ -76,8 +108,8 @@ export function NavUser({
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
                                     <AvatarImage
-                                        src={user.avatar}
-                                        alt={user.name}
+                                        src={userImage}
+                                        alt={data?.user.name || 'User'}
                                     />
                                     <AvatarFallback className="rounded-lg">
                                         CN
@@ -85,41 +117,50 @@ export function NavUser({
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">
-                                        {user.name}
+                                        {data?.user.name}
                                     </span>
                                     <span className="truncate text-xs">
-                                        {user.email}
+                                        {data?.user.email}
                                     </span>
                                 </div>
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <Sparkles />
+                            <DropdownMenuItem className="group">
+                                <Sparkles className="transition-colors group-hover:text-yellow-400" />
                                 Upgrade to Pro
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <BadgeCheck />
-                                Account
+                            <DropdownMenuItem className="group" asChild>
+                                <Link href={'/settings/account'}>
+                                    <BadgeCheck className="transition-colors group-hover:text-blue-400" />
+                                    Account
+                                </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <CreditCard />
-                                Billing
+                            <DropdownMenuItem className="group" asChild>
+                                <Link href={'/settings/billing'}>
+                                    <CreditCard className="transition-colors group-hover:text-green-400" />
+                                    Billing
+                                </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Bell />
+                            {/* <DropdownMenuItem className="group">
+                                <Bell className="group-hover:text-primary transition-colors" />
                                 Notifications
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <LogOut />
-                            Log out
-                        </DropdownMenuItem>
+                        <LogOutDialog>
+                            <DropdownMenuItem
+                                className="group"
+                                onSelect={(e) => e.preventDefault()}
+                            >
+                                <LogOut className="transition-colors group-hover:text-red-400" />
+                                Log out
+                            </DropdownMenuItem>
+                        </LogOutDialog>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>

@@ -3,8 +3,8 @@
 import {
     BookOpen,
     Bot,
-    Command,
     Frame,
+    HouseIcon,
     LifeBuoy,
     Map,
     PieChart,
@@ -23,18 +23,20 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { authClient } from '@/lib/auth-client';
+import { AppLogo } from '../shared/app-logo';
 import { NavMain } from './nav-main';
 import { NavProjects } from './nav-projects';
 import { NavSecondary } from './nav-secondary';
 import { NavUser } from './nav-user';
 
-const data = {
-    user: {
-        name: 'shadcn',
-        email: 'm@example.com',
-        avatar: '/avatars/shadcn.jpg',
-    },
+const sidebarData = {
     navMain: [
+        {
+            title: 'Home',
+            url: '/',
+            icon: HouseIcon,
+        },
         {
             title: 'Playground',
             url: '#',
@@ -153,6 +155,13 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { data, isPending, error } = authClient.useSession();
+
+    console.log({
+        data,
+        isPending,
+        error,
+    });
     return (
         <Sidebar variant="inset" {...props}>
             <SidebarHeader>
@@ -160,12 +169,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <a href="#">
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                    <Command className="size-4" />
+                                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                                    <AppLogo className="size-4" />
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">
-                                        Acme Inc
+                                        Snak{' '}
+                                        <span className="text-[0.5rem]">
+                                            Eats
+                                        </span>
                                     </span>
                                     <span className="truncate text-xs">
                                         Enterprise
@@ -177,12 +189,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain} />
-                <NavProjects projects={data.projects} />
-                <NavSecondary items={data.navSecondary} className="mt-auto" />
+                <NavMain items={sidebarData.navMain} />
+                <NavProjects projects={sidebarData.projects} />
+                <NavSecondary
+                    items={sidebarData.navSecondary}
+                    className="mt-auto"
+                />
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={data.user} />
+                <NavUser />
             </SidebarFooter>
         </Sidebar>
     );

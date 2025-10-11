@@ -51,6 +51,7 @@ export const LoginForm = () => {
                 email: values.email,
                 password: values.password,
                 callbackURL: '/',
+                rememberMe: values.rememberMe || false,
             },
             {
                 onRequest: () => {

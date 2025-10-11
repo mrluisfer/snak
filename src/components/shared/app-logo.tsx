@@ -4,7 +4,10 @@ import type { SVGProps } from 'react';
 export const AppLogo = (props: SVGProps<SVGSVGElement>) => (
     <AppLogoBase
         {...props}
-        className={cn('fill-blue-400 text-blue-400', props.className)}
+        className={cn(
+            '-rotate-90 fill-blue-400 text-blue-400',
+            props.className,
+        )}
     />
 );
 
