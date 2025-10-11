@@ -8,6 +8,7 @@ import { HouseIcon } from 'lucide-react';
 import Link from 'next/link';
 import { use } from 'react';
 import { LoginForm } from './_components/login/login-form';
+import { SignUpForm } from './_components/sign-up/sign-up-form';
 import { getAuthModeFromKey } from './_lib/utils';
 
 enum ValidAuthModes {
@@ -44,6 +45,9 @@ export default function AuthPage({
                     <div className="mx-auto flex items-center justify-center">
                         {authMode === ValidAuthModes.LOGIN ? (
                             <LoginForm />
+                        ) : null}
+                        {authMode === ValidAuthModes.SIGNUP ? (
+                            <SignUpForm />
                         ) : null}
                     </div>
                 </div>
