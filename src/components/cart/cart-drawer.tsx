@@ -1,3 +1,5 @@
+'use client';
+
 import { useCartContext } from '@/hooks/use-cart-context';
 import { ShoppingCart, XIcon } from 'lucide-react';
 
@@ -25,13 +27,9 @@ export const CartDrawer = () => {
     return (
         <Drawer direction="right" open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger asChild>
-                <Button
-                    variant={'secondary'}
-                    size={'icon'}
-                    className="relative"
-                >
+                <Button variant={'default'} size={'icon'} className="relative">
                     {!cart.length ? null : (
-                        <Badge className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2">
+                        <Badge className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2">
                             {cart.length}
                         </Badge>
                     )}
@@ -64,7 +62,7 @@ export const CartDrawer = () => {
                         <div className="flex justify-between">
                             <div>
                                 <p className="font-medium">{item.name}</p>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-muted-foreground text-sm">
                                     Quantity: {item.quantity ?? 1}
                                 </p>
                             </div>

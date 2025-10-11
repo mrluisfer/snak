@@ -1,3 +1,5 @@
+'use client';
+
 // cart-context.tsx
 import type { CartItem } from '@/types';
 import type { ApiFood } from '@/types/api/api-types';

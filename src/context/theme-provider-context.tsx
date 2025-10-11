@@ -1,3 +1,5 @@
+'use client';
+
 import type { Theme } from '@/constants/theme';
 import { createContext } from 'react';
 

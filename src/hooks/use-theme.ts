@@ -1,3 +1,5 @@
+'use client';
+
 import { ThemeProviderContext } from '@/context/theme-provider-context';
 import { useContext } from 'react';
 
