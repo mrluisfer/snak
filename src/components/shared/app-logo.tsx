@@ -5,7 +5,7 @@ export const AppLogo = (props: SVGProps<SVGSVGElement>) => (
     <AppLogoBase
         {...props}
         className={cn(
-            '-rotate-90 fill-blue-400 text-blue-400',
+            '-rotate-90 fill-white text-white dark:fill-blue-400 dark:text-blue-400',
             props.className,
         )}
     />
