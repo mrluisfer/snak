@@ -1,4 +1,10 @@
-import { Card, CardContent } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { AccountForm } from './_components/account/account-form';
@@ -84,16 +90,11 @@ export default async function SettingsPage({
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">
-                    {config.title}
-                </h1>
-                <p className="text-muted-foreground mt-2">
-                    {config.description}
-                </p>
-            </div>
-
             <Card>
+                <CardHeader>
+                    <CardTitle>{config.title}</CardTitle>
+                    <CardDescription>{config.description}</CardDescription>
+                </CardHeader>
                 <CardContent className="pt-6">
                     <SettingComponent />
                 </CardContent>

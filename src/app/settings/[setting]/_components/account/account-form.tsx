@@ -107,7 +107,14 @@ export const AccountForm = () => {
                         )}
                     />
 
-                    <Button type="submit" disabled={isPending}>
+                    <Button
+                        type="submit"
+                        disabled={
+                            isPending ||
+                            !form.formState.isDirty ||
+                            !form.formState.isValid
+                        }
+                    >
                         {isPending ? (
                             <>
                                 <Spinner />
