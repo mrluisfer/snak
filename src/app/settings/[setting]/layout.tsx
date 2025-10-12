@@ -27,7 +27,7 @@ export default function SettingsLayout({
     return (
         <Providers>
             <SharedLayout>
-                <div className="pt-24">
+                <div className="min-h-screen pt-24">
                     <div>
                         <h1 className="pl-6 font-serif text-2xl font-bold">
                             Settings

@@ -208,3 +208,20 @@ html {
 .hidden-scroll::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
 }
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) var(--color-background);
+}
+html::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+html::-webkit-scrollbar-track {
+    background: var(--color-background);
+}
+html::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 4px;
+    border: 2px solid var(--color-background);
+}
