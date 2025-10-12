@@ -10,6 +10,8 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { MapPinHouseIcon } from 'lucide-react';
+import { AddNewAddress } from './add-new-address';
+import { ListAllAddresses } from './list-all-addresses';
 
 export const Addresses = () => {
     return (
@@ -28,6 +30,8 @@ export const Addresses = () => {
                         purposes.
                     </DialogDescription>
                 </DialogHeader>
+                <AddNewAddress />
+                <ListAllAddresses />
             </DialogContent>
         </Dialog>
     );
