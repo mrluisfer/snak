@@ -14,7 +14,6 @@ export async function POST(request: Request) {
         }
 
         const session = await auth.api.getSession(request);
-        console.log('session:', session);
 
         if (!session || !session.user) {
             return NextResponse.json(
@@ -46,7 +45,6 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
     try {
         const session = await auth.api.getSession(request);
-        console.log('session:', session);
 
         if (!session || !session.user) {
             return NextResponse.json(
@@ -92,7 +90,6 @@ export async function PUT(request: Request) {
         }
 
         const session = await auth.api.getSession(request);
-        console.log('session:', session);
 
         if (!session || !session.user) {
             return NextResponse.json(

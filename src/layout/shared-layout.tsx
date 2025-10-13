@@ -11,7 +11,7 @@ export const SharedLayout = ({ children }: { children: ReactNode }) => {
                 <AppSidebar />
                 <SidebarInset>
                     <div className="font-poppins container mx-auto p-6">
-                        {children}
+                        <div className="min-h-screen">{children}</div>
                         <footer className="mt-12 border-t-2">
                             <TextHoverEffect text="Snak" />
                         </footer>

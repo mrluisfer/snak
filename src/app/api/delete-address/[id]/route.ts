@@ -7,7 +7,6 @@ export async function DELETE(
 ) {
     try {
         const session = await auth.api.getSession(request);
-        console.log('session:', session);
 
         if (!session || !session.user) {
             return NextResponse.json(

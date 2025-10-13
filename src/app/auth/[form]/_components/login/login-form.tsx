@@ -47,7 +47,7 @@ export const LoginForm = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
-        const { data, error } = await authClient.signIn.email(
+        await authClient.signIn.email(
             {
                 email: values.email,
                 password: values.password,
@@ -75,8 +75,6 @@ export const LoginForm = () => {
                 },
             },
         );
-
-        console.log({ data, error });
     };
 
     return (

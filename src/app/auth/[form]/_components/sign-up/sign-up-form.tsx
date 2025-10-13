@@ -43,9 +43,7 @@ export const SignUpForm = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
-        console.log(values);
-
-        const { data, error } = await authClient.signUp.email(
+        await authClient.signUp.email(
             {
                 email: values.email,
                 password: values.password,
@@ -73,8 +71,6 @@ export const SignUpForm = () => {
                 },
             },
         );
-
-        console.log({ data, error });
     };
 
     return (

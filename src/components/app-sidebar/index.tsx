@@ -3,6 +3,7 @@
 import {
     BookOpen,
     Bot,
+    FactoryIcon,
     Frame,
     HouseIcon,
     LifeBuoy,
@@ -10,7 +11,6 @@ import {
     PieChart,
     Send,
     Settings2,
-    SquareTerminal,
 } from 'lucide-react';
 import * as React from 'react';
 
@@ -18,15 +18,16 @@ import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
+    SidebarGroup,
+    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 import { AppLogo } from '../shared/app-logo';
-import { NavMain } from './nav-main';
+import { BusinessList } from './nav-main';
 import { NavProjects } from './nav-projects';
 import { NavSecondary } from './nav-secondary';
 import { NavUser } from './nav-user';
@@ -34,14 +35,9 @@ import { NavUser } from './nav-user';
 const sidebarData = {
     navMain: [
         {
-            title: 'Home',
-            url: '/',
-            icon: HouseIcon,
-        },
-        {
-            title: 'Playground',
-            url: '#',
-            icon: SquareTerminal,
+            title: 'Business',
+            url: '/business',
+            icon: FactoryIcon,
             isActive: true,
             items: [
                 {
@@ -156,13 +152,6 @@ const sidebarData = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const { data, isPending, error } = authClient.useSession();
-
-    console.log({
-        data,
-        isPending,
-        error,
-    });
     return (
         <Sidebar variant="inset" {...props}>
             <SidebarHeader>
@@ -190,7 +179,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent className="hidden-scroll">
-                <NavMain items={sidebarData.navMain} />
+                <SidebarGroup>
+                    <SidebarGroupLabel>Platform</SidebarGroupLabel>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild tooltip={'Home Page'}>
+                                <Link href={'/'}>
+                                    <HouseIcon />
+                                    <span>Home</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                    {/* <BusinessList  /> */}
+                    <BusinessList items={sidebarData.navMain} />
+                </SidebarGroup>
                 <NavProjects projects={sidebarData.projects} />
                 <NavSecondary
                     items={sidebarData.navSecondary}

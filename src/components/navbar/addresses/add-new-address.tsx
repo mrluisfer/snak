@@ -37,7 +37,6 @@ export const AddNewAddress = () => {
             mutate('/api/address-by-user-id');
             setIsLoading(false);
         } catch (error) {
-            console.log('Error:', error);
             toast.error('Failed to save address. Please try again.');
             setIsLoading(false);
         }

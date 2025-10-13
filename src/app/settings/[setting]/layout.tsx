@@ -22,8 +22,6 @@ export default function SettingsLayout({
         (field) => field.href.split('/')[2] === pathname.split('/')[2],
     );
 
-    console.log({ pathname, activePathname });
-
     return (
         <Providers>
             <SharedLayout>

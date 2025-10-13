@@ -6,10 +6,8 @@ export default function Home() {
     return (
         <CartProvider>
             <SharedLayout>
-                <div className="min-h-screen">
-                    <Navbar />
-                    {/* <Foods /> */}
-                </div>
+                <Navbar />
+                {/* <Foods /> */}
             </SharedLayout>
         </CartProvider>
     );

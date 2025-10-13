@@ -36,7 +36,6 @@ export const AccountForm = () => {
     });
 
     const handleSubmit = async (data: z.infer<typeof accountFormSchema>) => {
-        console.log(data);
         await authClient.updateUser({
             name: data.username,
         });
