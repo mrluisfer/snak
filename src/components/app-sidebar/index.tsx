@@ -26,6 +26,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { AppLogo } from '../shared/app-logo';
 import { BusinessList } from './nav-main';
 import { NavProjects } from './nav-projects';
@@ -152,6 +153,8 @@ const sidebarData = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const pathname = usePathname();
+
     return (
         <Sidebar variant="inset" {...props}>
             <SidebarHeader>
@@ -183,7 +186,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarGroupLabel>Platform</SidebarGroupLabel>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild tooltip={'Home Page'}>
+                            <SidebarMenuButton
+                                asChild
+                                tooltip={'Home Page'}
+                                isActive={pathname === '/'}
+                            >
                                 <Link href={'/'}>
                                     <HouseIcon />
                                     <span>Home</span>
@@ -191,8 +198,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
-                    {/* <BusinessList  /> */}
-                    <BusinessList items={sidebarData.navMain} />
+                    <BusinessList />
                 </SidebarGroup>
                 <NavProjects projects={sidebarData.projects} />
                 <NavSecondary

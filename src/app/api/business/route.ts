@@ -72,3 +72,45 @@ export async function POST(req: Request) {
         );
     }
 }
+
+export async function GET(req: Request) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const userId = searchParams.get('userId');
+
+        if (!userId) {
+            return new Response(
+                JSON.stringify({
+                    status: 0,
+                    error: 'Missing userId parameter',
+                }),
+                {
+                    status: 400,
+                },
+            );
+        }
+
+        const businessMembers = await prisma.businessMember.findMany({
+            where: {
+                userId,
+            },
+            include: {
+                business: true,
+            },
+        });
+
+        const businesses = businessMembers.map((member) => member.business);
+
+        return new Response(JSON.stringify({ status: 1, businesses }), {
+            status: 200,
+        });
+    } catch (error) {
+        console.error('Error fetching businesses:', error);
+        return new Response(
+            JSON.stringify({ status: 0, error: 'Failed to fetch businesses' }),
+            {
+                status: 500,
+            },
+        );
+    }
+}

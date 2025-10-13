@@ -3,23 +3,24 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
+import { Business } from '@/generated/prisma';
+import { BoxIcon } from 'lucide-react';
 import Link from 'next/link';
 
-export const NavList = ({
-    items,
-}: {
-    items?: Array<{
-        title: string;
-        url: string;
-    }>;
-}) => {
+export const NavList = ({ businesses }: { businesses?: Array<Business> }) => {
     return (
         <SidebarMenuSub>
-            {items?.map((subItem) => (
-                <SidebarMenuSubItem key={subItem.title}>
+            {businesses?.map((business) => (
+                <SidebarMenuSubItem
+                    key={business.name}
+                    className={`group/business-item`}
+                >
                     <SidebarMenuSubButton asChild>
-                        <Link href={subItem.url}>
-                            <span>{subItem.title}</span>
+                        <Link href={`/business/${business.id}`}>
+                            <BoxIcon
+                                className={`group-hover/business-item:text-primary transition-all`}
+                            />
+                            <span>{business.name}</span>
                         </Link>
                     </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
