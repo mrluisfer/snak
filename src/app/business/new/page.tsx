@@ -19,6 +19,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { TypographyH1 } from '@/components/ui/typography-h1';
 import { Providers } from '@/layout/providers';
 import { SharedLayout } from '@/layout/shared-layout';
@@ -131,13 +132,29 @@ export default function BusinessNewPage() {
                                                 Business Description
                                             </FormLabel>
                                             <FormControl>
-                                                <Input
+                                                <Textarea
                                                     {...field}
                                                     placeholder="A brief description of your business."
-                                                    type="text"
                                                     autoComplete="organization-description"
+                                                    maxLength={500}
+                                                    className="h-32 max-h-44 min-h-20 resize-y"
                                                 />
                                             </FormControl>
+                                            <FormDescription>
+                                                {field.value &&
+                                                field.value.length > 5 ? (
+                                                    <>
+                                                        {field.value.length}
+                                                        /500
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        Add a brief description
+                                                        of your business
+                                                        (optional).
+                                                    </>
+                                                )}
+                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}

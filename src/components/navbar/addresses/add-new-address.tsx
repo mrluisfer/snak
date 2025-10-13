@@ -53,6 +53,8 @@ export const AddNewAddress = () => {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="123 Main Street, City, Country"
+                    type="text"
+                    autoComplete="shipping street-address webauthn"
                 />
                 <Button
                     disabled={!address.length || isLoading}
