@@ -22,8 +22,7 @@ export async function POST(req: Request) {
         const businessResponse = await prisma.business.create({
             data: {
                 name: body.name,
-                // TODO: add description in the business model
-                // description: body.description,
+                description: body.description,
                 address: body.address,
             },
         });
