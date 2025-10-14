@@ -74,7 +74,22 @@ export function BusinessList() {
         );
     }
 
-    console.log({ pathname });
+    if (!session) {
+        // return (
+        //     <SidebarMenu>
+        //         <SidebarMenuItem>
+        //             <SidebarMenuButton type="button" asChild>
+        //                 <Link href={'/auth/login'}>
+        //                     <FactoryIcon className="text-primary" />
+        //                     <span>Log in to view your businesses</span>
+        //                 </Link>
+        //             </SidebarMenuButton>
+        //         </SidebarMenuItem>
+        //     </SidebarMenu>
+        // );
+        return null;
+    }
+
     return (
         <SidebarMenu>
             <Collapsible

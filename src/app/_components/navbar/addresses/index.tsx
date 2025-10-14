@@ -39,7 +39,7 @@ export const Addresses = () => {
 
     if (!data) {
         return (
-            <Button asChild variant={'outline'} size={'sm'}>
+            <Button asChild variant={'outline'}>
                 <Link href={'/auth/login'}>
                     <UserIcon className="text-primary" />
                     <p>Log in to manage your addresses.</p>

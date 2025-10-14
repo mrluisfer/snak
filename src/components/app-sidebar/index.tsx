@@ -28,6 +28,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AppLogo } from '../shared/app-logo';
+import { NavAuth } from './nav-auth';
 import { BusinessList } from './nav-main';
 import { NavProjects } from './nav-projects';
 import { NavSecondary } from './nav-secondary';
@@ -201,6 +202,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <BusinessList />
                 </SidebarGroup>
                 <NavProjects projects={sidebarData.projects} />
+                <NavAuth />
                 <NavSecondary
                     items={sidebarData.navSecondary}
                     className="mt-auto"

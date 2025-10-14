@@ -1,5 +1,5 @@
+import { AppTitle } from '@/app/_components/navbar/app-title';
 import { loginModalAtom, signupModalAtom } from '@/atoms';
-import { AppTitle } from '@/components/navbar/app-title';
 import { AppLogo } from '@/components/shared/app-logo';
 
 import { useAtom, useSetAtom } from 'jotai';
@@ -54,8 +54,8 @@ export const RegisterModal = ({ children }: { children?: ReactNode }) => {
 
                 <RegisterForm />
 
-                <div className="flex items-center gap-3 before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
-                    <span className="text-xs text-muted-foreground">Or</span>
+                <div className="before:bg-border after:bg-border flex items-center gap-3 before:h-px before:flex-1 after:h-px after:flex-1">
+                    <span className="text-muted-foreground text-xs">Or</span>
                 </div>
 
                 <Button
@@ -66,7 +66,7 @@ export const RegisterModal = ({ children }: { children?: ReactNode }) => {
                     Already have an account? Log in
                 </Button>
 
-                <p className="text-center text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-center text-xs">
                     By signing up you agree to our{' '}
                     <a className="underline hover:no-underline" href="#">
                         Terms

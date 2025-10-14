@@ -1,6 +1,8 @@
-import { CartDrawer } from '../cart/cart-drawer';
-import { ThemeToggle } from '../shared/theme-toggle';
+import { CartDrawer } from '../../../components/cart/cart-drawer';
+import { ThemeToggle } from '../../../components/shared/theme-toggle';
 import { Addresses } from './addresses';
+import RegisterBtn from './register-btn';
+import { SearchBar } from './search-bar';
 
 export const Navbar = () => {
     return (
@@ -8,7 +10,8 @@ export const Navbar = () => {
             <div></div>
             <div className="flex flex-1 items-center gap-2 px-6">
                 <Addresses />
-                {/* <SearchBar className="w-full" /> */}
+                <SearchBar className="w-full" />
+                <RegisterBtn />
             </div>
             <div>
                 <nav className="flex items-center gap-4">
