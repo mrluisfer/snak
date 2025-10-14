@@ -115,7 +115,6 @@ export default function BusinessNewPage() {
                                                     {...field}
                                                     placeholder="The Next Big Thing SA,CV."
                                                     type="text"
-                                                    autoComplete="organization"
                                                 />
                                             </FormControl>
                                             <FormMessage />

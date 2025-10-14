@@ -150,7 +150,11 @@ export const LoginForm = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="btn-primary btn w-full">
+                    <Button
+                        type="submit"
+                        className="btn-primary btn w-full"
+                        disabled={isLoading || form.formState.isSubmitting}
+                    >
                         {isLoading ? (
                             <>
                                 <Spinner />
