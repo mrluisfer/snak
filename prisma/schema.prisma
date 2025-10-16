@@ -55,9 +55,22 @@ model BusinessMember {
   createdAt  DateTime     @default(now())
   business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
   user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobId      Int?
+  job        Job?         @relation(fields: [jobId], references: [id], onDelete: SetNull)
 
   @@unique([userId, businessId])
   @@index([businessId, role])
+  @@schema("public")
+}
+
+model Job {
+  id             Int              @id @default(autoincrement())
+  name           String?          @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  BusinessMember BusinessMember[]
+
+  @@map("job")
   @@schema("public")
 }
 
@@ -205,6 +218,7 @@ enum BusinessRole {
   OWNER
   ADMIN
   STAFF
+  USER
 
   @@schema("public")
 }
