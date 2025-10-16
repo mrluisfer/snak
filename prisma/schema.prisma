@@ -53,10 +53,10 @@ model BusinessMember {
   businessId String
   role       BusinessRole @default(STAFF)
   createdAt  DateTime     @default(now())
-  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   jobId      Int?
-  job        Job?         @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  job        Job?         @relation(fields: [jobId], references: [id])
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, businessId])
   @@index([businessId, role])
