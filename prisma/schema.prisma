@@ -18,12 +18,12 @@ model User {
   deletedAt        DateTime?
   emailVerified    Boolean            @default(false)
   image            String?
+  addresses        Addresses[]
   BusinessCustomer BusinessCustomer[]
   memberships      BusinessMember[]
   ordersPlaced     Order[]            @relation("OrdersByBuyer")
   accounts         Account[]
   sessions         Session[]
-  addresses       Addresses[]
 
   @@map("user")
   @@schema("public")
@@ -33,10 +33,10 @@ model Business {
   id             String             @id @default(cuid())
   name           String
   address        String?
-  description    String?
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
   deletedAt      DateTime?
+  description    String?
   customers      BusinessCustomer[]
   members        BusinessMember[]
   Order          Order[]
@@ -53,7 +53,9 @@ model BusinessMember {
   businessId String
   role       BusinessRole @default(STAFF)
   createdAt  DateTime     @default(now())
+  jobId      Int?
   business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  job        job?         @relation(fields: [jobId], references: [id])
   user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, businessId])
@@ -189,10 +191,33 @@ model Verification {
   @@schema("public")
 }
 
+model Addresses {
+  id        String   @id @default(cuid())
+  userId    String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@schema("public")
+}
+
+model job {
+  id             Int              @id @default(autoincrement())
+  name           String?          @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  BusinessMember BusinessMember[]
+
+  @@schema("public")
+}
+
 enum BusinessRole {
   OWNER
   ADMIN
   STAFF
+  USER
 
   @@schema("public")
 }
@@ -221,16 +246,4 @@ enum Currency {
   EUR
 
   @@schema("public")
-}
-
-model Addresses {
-    id        String   @id @default(cuid())
-    userId    String
-    address   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@index([userId])
-    @@schema("public")
 }

@@ -34,9 +34,10 @@ export const AddNewAddress = () => {
             // Optionally, you can trigger a re-fetch of the addresses list here
             // e.g., by using a context or a state management solution  to notify the ListAllAddresses component
             // mutate('/api/address-by-user-id'); // If using SWR in ListAllAddresses
-            mutate('/api/address-by-user-id');
+            await mutate('/api/address-by-user-id');
             setIsLoading(false);
         } catch (error) {
+            console.error(error);
             toast.error('Failed to save address. Please try again.');
             setIsLoading(false);
         }

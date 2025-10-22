@@ -1,17 +1,6 @@
 'use client';
 
-import {
-    BookOpen,
-    Bot,
-    FactoryIcon,
-    Frame,
-    HouseIcon,
-    LifeBuoy,
-    Map,
-    PieChart,
-    Send,
-    Settings2,
-} from 'lucide-react';
+import { HouseIcon } from 'lucide-react';
 import * as React from 'react';
 
 import {
@@ -19,6 +8,7 @@ import {
     SidebarContent,
     SidebarFooter,
     SidebarGroup,
+    SidebarGroupContent,
     SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
@@ -29,128 +19,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AppLogo } from '../shared/app-logo';
 import { BusinessList } from './nav-main';
-import { NavProjects } from './nav-projects';
 import { NavSecondary } from './nav-secondary';
 import { NavUser } from './nav-user';
-
-const sidebarData = {
-    navMain: [
-        {
-            title: 'Business',
-            url: '/business',
-            icon: FactoryIcon,
-            isActive: true,
-            items: [
-                {
-                    title: 'History',
-                    url: '#',
-                },
-                {
-                    title: 'Starred',
-                    url: '#',
-                },
-                {
-                    title: 'Settings',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Models',
-            url: '#',
-            icon: Bot,
-            items: [
-                {
-                    title: 'Genesis',
-                    url: '#',
-                },
-                {
-                    title: 'Explorer',
-                    url: '#',
-                },
-                {
-                    title: 'Quantum',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Documentation',
-            url: '#',
-            icon: BookOpen,
-            items: [
-                {
-                    title: 'Introduction',
-                    url: '#',
-                },
-                {
-                    title: 'Get Started',
-                    url: '#',
-                },
-                {
-                    title: 'Tutorials',
-                    url: '#',
-                },
-                {
-                    title: 'Changelog',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Settings',
-            url: '#',
-            icon: Settings2,
-            items: [
-                {
-                    title: 'General',
-                    url: '#',
-                },
-                {
-                    title: 'Team',
-                    url: '#',
-                },
-                {
-                    title: 'Billing',
-                    url: '#',
-                },
-                {
-                    title: 'Limits',
-                    url: '#',
-                },
-            ],
-        },
-    ],
-    navSecondary: [
-        {
-            title: 'Support',
-            url: '#',
-            icon: LifeBuoy,
-        },
-        {
-            title: 'Feedback',
-            url: '#',
-            icon: Send,
-        },
-    ],
-    projects: [
-        {
-            name: 'Design Engineering',
-            url: '#',
-            icon: Frame,
-        },
-        {
-            name: 'Sales & Marketing',
-            url: '#',
-            icon: PieChart,
-        },
-        {
-            name: 'Travel',
-            url: '#',
-            icon: Map,
-        },
-    ],
-};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const pathname = usePathname();
@@ -184,27 +54,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent className="hidden-scroll">
                 <SidebarGroup>
                     <SidebarGroupLabel>Platform</SidebarGroupLabel>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton
-                                asChild
-                                tooltip={'Home Page'}
-                                isActive={pathname === '/'}
-                            >
-                                <Link href={'/'}>
-                                    <HouseIcon />
-                                    <span>Home</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                    <BusinessList />
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton
+                                    asChild
+                                    tooltip={'Home Page'}
+                                    isActive={pathname === '/'}
+                                >
+                                    <Link href={'/'}>
+                                        <HouseIcon />
+                                        <span>Home</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <BusinessList />
+                        </SidebarMenu>
+                    </SidebarGroupContent>
                 </SidebarGroup>
-                <NavProjects projects={sidebarData.projects} />
-                <NavSecondary
-                    items={sidebarData.navSecondary}
-                    className="mt-auto"
-                />
+                <NavSecondary className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser />

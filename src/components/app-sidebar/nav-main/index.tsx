@@ -13,7 +13,6 @@ import {
     CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import {
-    SidebarMenu,
     SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
@@ -50,87 +49,77 @@ export function BusinessList() {
 
     if (isLoading) {
         return (
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton type="button" disabled>
-                        <Spinner />
-                        <span>Loading...</span>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
+            <SidebarMenuItem>
+                <SidebarMenuButton type="button" disabled>
+                    <Spinner />
+                    <span>Loading...</span>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
         );
     }
 
     if (error) {
         return (
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton type="button" disabled>
-                        <BugIcon className="text-red-400" />
-                        <span>Failed to load Business</span>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
+            <SidebarMenuItem>
+                <SidebarMenuButton type="button" disabled>
+                    <BugIcon className="text-red-400" />
+                    <span>Failed to load Business</span>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
         );
     }
 
-    console.log({ pathname });
     return (
-        <SidebarMenu>
-            <Collapsible
-                key={'businesses'}
-                asChild
-                defaultOpen={pathname.startsWith('/business')}
-            >
-                <SidebarMenuItem>
-                    <SidebarMenuButton
-                        asChild
-                        tooltip={'Businesses'}
-                        isActive={'/business' === pathname}
-                    >
-                        <Link href={'/business'}>
-                            <FactoryIcon />
-                            <span>Business</span>
-                        </Link>
-                    </SidebarMenuButton>
-                    {businesses?.length ? (
-                        <>
-                            <CollapsibleTrigger asChild>
-                                <SidebarMenuAction className="data-[state=open]:rotate-90">
-                                    <ChevronRight />
-                                    <span className="sr-only">Toggle</span>
-                                </SidebarMenuAction>
-                            </CollapsibleTrigger>
-                            <CollapsibleContent>
-                                <SidebarMenuSub>
-                                    <SidebarMenuSubItem className="group/new-business">
-                                        <SidebarMenuSubButton
-                                            asChild
-                                            isActive={
-                                                pathname === '/business/new'
-                                            }
-                                        >
-                                            <Link href={'/business/new'}>
-                                                <Building2Icon
-                                                    className={cn(
-                                                        'transition-all group-hover/new-business:text-blue-400',
-                                                        pathname ===
-                                                            '/business/new'
-                                                            ? '!important text-blue-400'
-                                                            : '',
-                                                    )}
-                                                />
-                                                <span>Create new business</span>
-                                            </Link>
-                                        </SidebarMenuSubButton>
-                                    </SidebarMenuSubItem>
-                                </SidebarMenuSub>
-                                <NavList businesses={businesses} />
-                            </CollapsibleContent>
-                        </>
-                    ) : null}
-                </SidebarMenuItem>
-            </Collapsible>
-        </SidebarMenu>
+        <Collapsible
+            key={'businesses'}
+            asChild
+            defaultOpen={pathname.startsWith('/business')}
+        >
+            <SidebarMenuItem>
+                <SidebarMenuButton
+                    asChild
+                    tooltip={'Businesses'}
+                    isActive={'/business' === pathname}
+                >
+                    <Link href={'/business'}>
+                        <FactoryIcon />
+                        <span>Business</span>
+                    </Link>
+                </SidebarMenuButton>
+                {businesses?.length ? (
+                    <>
+                        <CollapsibleTrigger asChild>
+                            <SidebarMenuAction className="data-[state=open]:rotate-90">
+                                <ChevronRight />
+                                <span className="sr-only">Toggle</span>
+                            </SidebarMenuAction>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            <SidebarMenuSub>
+                                <SidebarMenuSubItem className="group/new-business">
+                                    <SidebarMenuSubButton
+                                        asChild
+                                        isActive={pathname === '/business/new'}
+                                    >
+                                        <Link href={'/business/new'}>
+                                            <Building2Icon
+                                                className={cn(
+                                                    'transition-all group-hover/new-business:text-blue-400',
+                                                    pathname === '/business/new'
+                                                        ? '!important text-blue-400'
+                                                        : '',
+                                                )}
+                                            />
+                                            <span>Create new business</span>
+                                        </Link>
+                                    </SidebarMenuSubButton>
+                                </SidebarMenuSubItem>
+                            </SidebarMenuSub>
+                            <NavList businesses={businesses} />
+                        </CollapsibleContent>
+                    </>
+                ) : null}
+            </SidebarMenuItem>
+        </Collapsible>
     );
 }

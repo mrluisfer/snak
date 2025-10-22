@@ -1,4 +1,4 @@
-import { type LucideIcon } from 'lucide-react';
+import { LifeBuoy, Send } from 'lucide-react';
 import * as React from 'react';
 
 import {
@@ -9,21 +9,27 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
+const navSecondary = [
+    {
+        title: 'Support',
+        url: '#',
+        icon: LifeBuoy,
+    },
+    {
+        title: 'Feedback',
+        url: '#',
+        icon: Send,
+    },
+];
+
 export function NavSecondary({
-    items,
     ...props
-}: {
-    items: {
-        title: string;
-        url: string;
-        icon: LucideIcon;
-    }[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
     return (
         <SidebarGroup {...props}>
             <SidebarGroupContent>
                 <SidebarMenu>
-                    {items.map((item) => (
+                    {navSecondary.map((item) => (
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton asChild size="sm">
                                 <a href={item.url}>

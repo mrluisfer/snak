@@ -1,4 +1,5 @@
 import { auth, prisma } from '@/lib/auth';
+import { ApiResponse } from '@/types/api/api-types';
 import { NextResponse } from 'next/server';
 
 export async function DELETE(
@@ -9,8 +10,8 @@ export async function DELETE(
         const session = await auth.api.getSession(request);
 
         if (!session || !session.user) {
-            return NextResponse.json(
-                { message: 'Unauthorized', status: 0 },
+            return NextResponse.json<ApiResponse<null>>(
+                { error: 'Unauthorized', status: 0, data: null },
                 { status: 401 },
             );
         }
@@ -18,8 +19,8 @@ export async function DELETE(
         const addressId = params.id;
 
         if (!addressId) {
-            return NextResponse.json(
-                { message: 'Address ID is required', status: 0 },
+            return NextResponse.json<ApiResponse<null>>(
+                { error: 'Address ID is required', status: 0, data: null },
                 { status: 400 },
             );
         }
@@ -31,14 +32,15 @@ export async function DELETE(
             },
         });
 
-        return NextResponse.json({
-            message: 'Address deleted successfully',
+        return NextResponse.json<ApiResponse<string>>({
+            error: undefined,
             status: 1,
+            data: 'Address deleted successfully',
         });
     } catch (error) {
         console.error('Error in DELETE /api/delete-address/:id:', error);
-        return NextResponse.json(
-            { message: 'Failed to delete address', status: 0 },
+        return NextResponse.json<ApiResponse<null>>(
+            { error: 'Failed to delete address', status: 0, data: null },
             { status: 500 },
         );
     }

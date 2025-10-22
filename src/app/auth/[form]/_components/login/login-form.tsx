@@ -150,7 +150,7 @@ export const LoginForm = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="btn-primary btn w-full">
+                    <Button type="submit" className="w-full">
                         {isLoading ? (
                             <>
                                 <Spinner />
