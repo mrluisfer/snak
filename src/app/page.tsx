@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/app/_components/navbar';
 import { CartProvider } from '@/components/providers/cart-provider';
 import { SharedLayout } from '@/layout/shared-layout';
 import { AllProducts } from '@/components/products/AllProducts';

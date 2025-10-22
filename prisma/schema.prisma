@@ -63,6 +63,17 @@ model BusinessMember {
   @@schema("public")
 }
 
+model Job {
+  id             Int              @id @default(autoincrement())
+  name           String?          @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  BusinessMember BusinessMember[]
+
+  @@map("job")
+  @@schema("public")
+}
+
 model Product {
   id          String      @id @default(cuid())
   businessId  String
@@ -217,7 +228,6 @@ enum BusinessRole {
   OWNER
   ADMIN
   STAFF
-  USER
 
   @@schema("public")
 }

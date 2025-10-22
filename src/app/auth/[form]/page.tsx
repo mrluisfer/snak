@@ -1,6 +1,6 @@
 'use client';
 
-import { AppTitle } from '@/components/navbar/app-title';
+import { AppTitle } from '@/app/_components/navbar/app-title';
 import { AppLogo } from '@/components/shared/app-logo';
 import { Button } from '@/components/ui/button';
 import { Providers } from '@/layout/providers';

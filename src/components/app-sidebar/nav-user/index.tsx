@@ -74,7 +74,7 @@ export function NavUser() {
         return (
             <SidebarMenuButton asChild>
                 <Link href={'/auth/login'}>
-                    <UserIcon className="mr-2" />
+                    <UserIcon className="text-primary mr-2" />
                     Log in into your account
                 </Link>
             </SidebarMenuButton>
