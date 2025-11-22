@@ -6,9 +6,8 @@ import { SearchBar } from './search-bar';
 
 export const Navbar = () => {
     return (
-        <header className="flex items-center justify-between">
-            <div></div>
-            <div className="flex flex-1 items-center gap-2 px-6">
+        <header className="flex items-center justify-between gap-4">
+            <div className="flex flex-1 items-center gap-2">
                 <Addresses />
                 <SearchBar className="w-full" />
                 <RegisterBtn />

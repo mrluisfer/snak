@@ -4,6 +4,8 @@ import { LoadingSpinner } from '@/components/shared/loadingSpinner';
 import { Product } from '@/generated/prisma';
 import { ApiResponse } from '@/types/api/api-types';
 import useSWR from 'swr';
+import { EmptyProducts } from './empty-products';
+import { ProductsList } from './products-list';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -17,7 +19,7 @@ export function AllProducts() {
 
     if (error) return <div>Error</div>;
 
-    if(!data) return null
+    if(!data || !data.status) return <EmptyProducts />
 
-    return <div>All products</div>
+    return <ProductsList data={data.data} />
 }
