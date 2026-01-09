@@ -73,6 +73,7 @@ export const Reasoning = memo(
                 setDuration(Math.round((Date.now() - startTime) / 1000));
                 setStartTime(null);
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [isStreaming, startTime, setDuration]);
 
         // Auto-open when streaming starts, auto-close when streaming ends (once only)
@@ -92,6 +93,7 @@ export const Reasoning = memo(
                 }, AUTO_CLOSE_DELAY);
                 return () => clearTimeout(timer);
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [isStreaming, isOpen, defaultOpen, setIsOpen, hasAutoClosedRef]);
 
         const handleOpenChange = (newOpen: boolean) => {
@@ -133,7 +135,7 @@ export const ReasoningTrigger = memo(
         return (
             <CollapsibleTrigger
                 className={cn(
-                    'flex items-center gap-2 text-sm text-muted-foreground',
+                    'text-muted-foreground flex items-center gap-2 text-sm',
                     className,
                 )}
                 {...props}
@@ -148,7 +150,7 @@ export const ReasoningTrigger = memo(
                         )}
                         <ChevronDownIcon
                             className={cn(
-                                'size-4 text-muted-foreground transition-transform',
+                                'text-muted-foreground size-4 transition-transform',
                                 isOpen ? 'rotate-180' : 'rotate-0',
                             )}
                         />
