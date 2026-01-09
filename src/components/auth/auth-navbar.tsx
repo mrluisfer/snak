@@ -1,5 +1,5 @@
-import { Link } from '@inertiajs/react';
 import { ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '../ui/button';
 
 const authLinks = {
