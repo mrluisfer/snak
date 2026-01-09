@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { id: string } },
+    { params }: { params: Promise<{ id: string }> },
 ) {
     try {
         const session = await auth.api.getSession(request);
@@ -16,7 +16,8 @@ export async function DELETE(
             );
         }
 
-        const addressId = params.id;
+        const { id } = await params;
+        const addressId = id;
 
         if (!addressId) {
             return NextResponse.json<ApiResponse<null>>(
