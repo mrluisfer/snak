@@ -10,9 +10,10 @@ import {
 } from '@/components/ui/form';
 import { InputPasswordSimple } from '@/components/ui/input-password-simple';
 import { Loader } from '@/components/ui/shadcn-io/ai/loader';
+import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from '@inertiajs/react';
 import { useSetAtom } from 'jotai';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -31,6 +32,7 @@ const loginFormSchema = z.object({
 export const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const setIsLoginModalOpen = useSetAtom(loginModalAtom);
+    const router = useRouter();
 
     const loginForm = useForm<z.infer<typeof loginFormSchema>>({
         resolver: zodResolver(loginFormSchema),
@@ -44,38 +46,29 @@ export const LoginForm = () => {
     const handleSubmitLogin = async (data: z.infer<typeof loginFormSchema>) => {
         setIsLoading(true);
         try {
-            router.post('/login', data, {
-                onSuccess: () => {
-                    toast.success('Login successful!', {
-                        position: 'top-center',
-                    });
-                    setIsLoginModalOpen(false);
-                },
-                onError: (errors) => {
-                    if (errors.email) {
-                        toast.error(errors.email, {
-                            position: 'top-center',
-                            richColors: true,
-                        });
-                    } else if (errors.password) {
-                        toast.error(errors.password, {
-                            position: 'top-center',
-                            richColors: true,
-                        });
-                    } else {
-                        toast.error(
-                            'Login failed. Please check your credentials and try again.',
-                            {
-                                position: 'top-center',
-                                richColors: true,
-                            },
-                        );
-                    }
-                },
-                onFinish: () => setIsLoading(false),
+            const { error } = await authClient.signIn.email({
+                email: data.email,
+                password: data.password,
+                rememberMe: data.remember,
             });
-            setIsLoading(false);
-            loginForm.reset();
+
+            if (error) {
+                toast.error(
+                    error.message ||
+                        'Login failed. Please check your credentials and try again.',
+                    {
+                        position: 'top-center',
+                        richColors: true,
+                    },
+                );
+            } else {
+                toast.success('Login successful!', {
+                    position: 'top-center',
+                });
+                setIsLoginModalOpen(false);
+                loginForm.reset();
+                router.refresh();
+            }
         } catch (error) {
             console.error('An unexpected error occurred:', error);
             toast.error(
@@ -85,6 +78,7 @@ export const LoginForm = () => {
                     richColors: true,
                 },
             );
+        } finally {
             setIsLoading(false);
         }
     };
@@ -146,7 +140,7 @@ export const LoginForm = () => {
                                             />
                                         </FormControl>
                                         <FormLabel
-                                            className="font-normal text-muted-foreground"
+                                            className="text-muted-foreground font-normal"
                                             htmlFor={field.name}
                                         >
                                             Remember me

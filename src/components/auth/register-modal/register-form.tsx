@@ -11,9 +11,10 @@ import {
 import { InputPassword } from '@/components/ui/input-password';
 import { InputPasswordSimple } from '@/components/ui/input-password-simple';
 import { Loader } from '@/components/ui/shadcn-io/ai/loader';
+import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from '@inertiajs/react';
 import { useSetAtom } from 'jotai';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -43,6 +44,7 @@ const signupFormSchema = z
 export const RegisterForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const setIsOpen = useSetAtom(signupModalAtom);
+    const router = useRouter();
 
     const signupForm = useForm<z.infer<typeof signupFormSchema>>({
         resolver: zodResolver(signupFormSchema),
@@ -59,41 +61,40 @@ export const RegisterForm = () => {
     ) => {
         setIsLoading(true);
         try {
-            router.post('/register', data, {
-                onSuccess: () => {
-                    toast.success('Account created successfully!', {
+            const { error } = await authClient.signUp.email({
+                name: data.name,
+                email: data.email,
+                password: data.password,
+            });
+
+            if (error) {
+                toast.error(
+                    error.message ||
+                        'Registration failed. Please check your details and try again.',
+                    {
                         position: 'top-center',
                         richColors: true,
-                    });
-                    setIsOpen(false);
-                },
-                onError: (errors) => {
-                    if (errors.email) {
-                        toast.error(errors.email, {
-                            position: 'top-center',
-                            richColors: true,
-                        });
-                    } else if (errors.password) {
-                        toast.error(errors.password, {
-                            position: 'top-center',
-                            richColors: true,
-                        });
-                    } else {
-                        toast.error(
-                            'Registration failed. Please check your details and try again.',
-                            {
-                                position: 'top-center',
-                                richColors: true,
-                            },
-                        );
-                    }
-                },
-                onFinish: () => setIsLoading(false),
-            });
-            setIsLoading(false);
-            signupForm.reset();
+                    },
+                );
+            } else {
+                toast.success('Account created successfully!', {
+                    position: 'top-center',
+                    richColors: true,
+                });
+                setIsOpen(false);
+                signupForm.reset();
+                router.refresh();
+            }
         } catch (error) {
             console.error('Catch error', error);
+            toast.error(
+                'An unexpected error occurred. Please try again later.',
+                {
+                    position: 'top-center',
+                    richColors: true,
+                },
+            );
+        } finally {
             setIsLoading(false);
         }
     };
